@@ -64,9 +64,17 @@ fn init() -> ! {
     let mut leds = randomize_board(&mut rng);
     display.show(&mut timer, leds, 100);
 
+    let mut waited = 0;
+
     loop {
+        if life::done(&leds) {
+            waited += 1;
+            if waited > 5 {
+                leds = randomize_board(&mut rng);
+            }
+        }
+
         life::life(&mut leds);
         display.show(&mut timer, leds, 100);
-
     }
 }
