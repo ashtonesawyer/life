@@ -64,15 +64,24 @@ fn init() -> ! {
     let mut leds = randomize_board(&mut rng);
     display.show(&mut timer, leds, 100);
 
-    let mut waited = 0;
+    let mut waited = 0; // wait after total death
+    let mut ignore = 0; // ignore after btn_b press
 
     loop {
         let pressed_a = btn_a.is_low().unwrap();
+        let pressed_b = btn_b.is_low().unwrap();
 
         if pressed_a {
             waited = 0;
             leds = randomize_board(&mut rng); 
-            display.show(&mut timer, leds, 100);
+        }
+        else if pressed_b && ignore > 5 {
+            ignore = 0;
+            for i in 0..5 {
+                for j in 0..5 {
+                    leds[i][j] = (leds[i][j] + 1) % 2;
+                }
+            }
         }
         else if life::done(&leds) {
             waited += 1;
@@ -80,11 +89,13 @@ fn init() -> ! {
             if waited > 5 {
                 waited = 0;
                 leds = randomize_board(&mut rng);
-                display.show(&mut timer, leds, 100);
             }
         }
+        else {
+            life::life(&mut leds);
+        }
 
-        life::life(&mut leds);
+        ignore += 1;
         display.show(&mut timer, leds, 100);
     }
 }
