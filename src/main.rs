@@ -14,6 +14,7 @@ use microbit::{
 };
 use nanorand::{pcg64::Pcg64, Rng, SeedableRng};
 use panic_rtt_target as _;
+use rtt_target::{rtt_init_print, rprintln};
 
 mod life;
 use life::*;
@@ -47,6 +48,7 @@ fn randomize_board(rng: &mut Pcg64) -> [[u8; 5]; 5] {
 
 #[entry]
 fn init() -> ! {
+    rtt_init_print!();
     let mut board = Board::take().unwrap();
     let mut display = Display::new(board.display_pins);
     let mut timer = Timer::new(board.TIMER0);
@@ -58,8 +60,13 @@ fn init() -> ! {
     let seed = hwrng.random_u64();
     let mut rng = Pcg64::new_seed(seed as u128);
 
+    // init starting random board
+    let mut leds = randomize_board(&mut rng);
+    display.show(&mut timer, leds, 100);
+
     loop {
-        let leds = randomize_board(&mut rng);
+        life::life(&mut leds);
         display.show(&mut timer, leds, 100);
+
     }
 }
