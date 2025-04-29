@@ -67,10 +67,20 @@ fn init() -> ! {
     let mut waited = 0;
 
     loop {
-        if life::done(&leds) {
+        let pressed_a = btn_a.is_low().unwrap();
+
+        if pressed_a {
+            waited = 0;
+            leds = randomize_board(&mut rng); 
+            display.show(&mut timer, leds, 100);
+        }
+        else if life::done(&leds) {
             waited += 1;
+
             if waited > 5 {
+                waited = 0;
                 leds = randomize_board(&mut rng);
+                display.show(&mut timer, leds, 100);
             }
         }
 
