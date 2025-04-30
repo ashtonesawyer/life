@@ -19,19 +19,13 @@ mod life;
 use life::*;
 
 fn randomize_board(rng: &mut Pcg64) -> [[u8; 5]; 5] {
-    let mut leds = [
-        [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0],
-    ];
+    let mut leds = [[0; 5]; 5];
 
-    for i in 0..5 {
-        for j in 0..5 {
+    for row in leds.iter_mut() {
+        for pin in row.iter_mut() {
             let rand: bool = rng.generate();
             if rand {
-                leds[i][j] = 1;
+                *pin = 1;
             }
         }
     }
@@ -69,9 +63,9 @@ fn init() -> ! {
         } else if pressed_b && ignore > 5 {
             waited = 0;
             ignore = 0;
-            for i in 0..5 {
-                for j in 0..5 {
-                    leds[i][j] = (leds[i][j] + 1) % 2;
+            for row in leds.iter_mut() {
+                for pin in row.iter_mut() {
+                    *pin ^= 1;
                 }
             }
         } else if done(&leds) {
