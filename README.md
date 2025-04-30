@@ -74,3 +74,13 @@ normal use. And if it did, it would be at max half of a second before the user
 could use button B, and so wouldn't be much of a bother if they had to press it
 a second time. 
 
+### General Rusty-ness
+If I'm being entirely honest, I don't know why certain variables needed to be
+mutable. With the LEDs it makes sense. With the RNG? Less so. I often set the
+variables as unmutable only to be scolded by the compiler. The same was true of
+passing by reference. 
+
+I could go read and figure out why it needed to be done that way. I probably
+will in the near future. Until then, though, it was very nice to not have to 
+worry too much about the details because I could trust the compiler to catch
+those issues for me and tell me accurately where it was and how to fix it. 
