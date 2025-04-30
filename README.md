@@ -1,6 +1,18 @@
 # Life
 Ashton Sawyer
 
+This is a program to play 
+[Conway's Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life)
+on the 5x5 LED grid on the Micro:bit-v2. 
+
+It runs at 10 frames per second. It starts with a random board and takes steps
+for the game of life each frame unless:
+-  While button A is held, the board is re-randomized every frame. 
+- Otherwise, when button B is pressed and not ignored, the board is inverted. 
+Then button B is ignored for 5 frames.
+- If all the cells are off, the program waits 5 frames before starting with a
+new random board (barring any buttons being pressed) 
+
 ## Development Process
 Writing this actually went better than I was expecting. My limited experience
 with Rust worried me, but once I started it went relatively quickly. I have
